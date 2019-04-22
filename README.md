@@ -1,5 +1,7 @@
 # Vokeh - Server
 
+- Webpack
+- ESLint
 - GraphQL
 - Express
 - JWT
