@@ -6,7 +6,7 @@ import { isAdmin, isAuthenticated } from './authorization'
 
 const createToken = async (user, secret, expiresIn) => {
   const { id, email, username, role } = user
-  return await jwt.sign({ id, email, username, role }, secret, {
+  return jwt.sign({ id, email, username, role }, secret, {
     expiresIn
   })
 }
@@ -14,17 +14,17 @@ const createToken = async (user, secret, expiresIn) => {
 export default {
   Query: {
     users: async (parent, args, { models }) => {
-      return await models.User.find()
+      return models.User.find()
     },
     user: async (parent, { id }, { models }) => {
-      return await models.User.findById(id)
+      return models.User.findById(id)
     },
     me: async (parent, args, { models, me }) => {
       if (!me) {
         return null
       }
 
-      return await models.User.findById(me.id)
+      return models.User.findById(me.id)
     }
   },
 
@@ -68,7 +68,7 @@ export default {
     updateUser: combineResolvers(
       isAuthenticated,
       async (parent, { username }, { models, me }) => {
-        return await models.User.findByIdAndUpdate(
+        return models.User.findByIdAndUpdate(
           me.id,
           { username },
           { new: true }
@@ -93,7 +93,7 @@ export default {
 
   User: {
     messages: async (user, args, { models }) => {
-      return await models.Message.find({
+      return models.Message.find({
         userId: user.id
       })
     }

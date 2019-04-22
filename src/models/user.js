@@ -1,60 +1,60 @@
-import mongoose from 'mongoose';
+import mongoose from 'mongoose'
 
-import bcrypt from 'bcrypt';
-import isEmail from 'validator/lib/isEmail';
+import bcrypt from 'bcrypt'
+import isEmail from 'validator/lib/isEmail'
 
 const userSchema = new mongoose.Schema({
   username: {
     type: String,
     unique: true,
-    required: true,
+    required: true
   },
   email: {
     type: String,
     unique: true,
     required: true,
-    validate: [isEmail, 'No valid email address provided.'],
+    validate: [isEmail, 'No valid email address provided.']
   },
   password: {
     type: String,
     required: true,
     minlength: 7,
-    maxlength: 42,
+    maxlength: 42
   },
   role: {
-    type: String,
-  },
-});
+    type: String
+  }
+})
 
 userSchema.statics.findByLogin = async function(login) {
   let user = await this.findOne({
-    username: login,
-  });
+    username: login
+  })
 
   if (!user) {
-    user = await this.findOne({ email: login });
+    user = await this.findOne({ email: login })
   }
 
-  return user;
-};
+  return user
+}
 
 userSchema.pre('remove', function(next) {
-  this.model('Message').deleteMany({ userId: this._id }, next);
-});
+  this.model('Message').deleteMany({ userId: this._id }, next)
+})
 
 userSchema.pre('save', async function() {
-  this.password = await this.generatePasswordHash();
-});
+  this.password = await this.generatePasswordHash()
+})
 
 userSchema.methods.generatePasswordHash = async function() {
-  const saltRounds = 10;
-  return await bcrypt.hash(this.password, saltRounds);
-};
+  const saltRounds = 10
+  return bcrypt.hash(this.password, saltRounds)
+}
 
 userSchema.methods.validatePassword = async function(password) {
-  return await bcrypt.compare(password, this.password);
-};
+  return bcrypt.compare(password, this.password)
+}
 
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model('User', userSchema)
 
-export default User;
+export default User

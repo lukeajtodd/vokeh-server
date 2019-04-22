@@ -7,6 +7,8 @@
     "node": "10.11.0"
   },
   "scripts": {
+    "clean": "rm -rf dist && mkdir dist && webpack",
+    "dev": "npm run clean && concurrently --kill-others \"webpack --watch\" \"forever -w ./dist/bundle.js\"",
     "start": "nodemon --exec babel-node src/index.js",
     "test:run-server": "TEST_DATABASE_URL=mongodb://localhost:27017/mytestdatabase npm start",
     "test:execute-test": "TEST_DATABASE_URL=mongodb://localhost:27017/mytestdatabase mocha --require @babel/register 'src/**/*.spec.js'",
@@ -18,13 +20,32 @@
   "devDependencies": {
     "@babel/core": "^7.1.6",
     "@babel/node": "^7.0.0",
+    "@babel/polyfill": "^7.4.3",
     "@babel/preset-env": "^7.1.6",
     "@babel/register": "^7.0.0",
     "axios": "^0.18.0",
+    "babel-eslint": "^10.0.1",
+    "babel-loader": "^8.0.5",
     "chai": "^4.2.0",
+    "concurrently": "^4.1.0",
+    "eslint": "^5.16.0",
+    "eslint-config-standard": "^12.0.0",
+    "eslint-friendly-formatter": "^4.0.1",
+    "eslint-loader": "^2.1.2",
+    "eslint-plugin-import": "^2.17.2",
+    "eslint-plugin-node": "^8.0.1",
+    "eslint-plugin-prettier": "^3.0.1",
+    "eslint-plugin-promise": "^4.1.1",
+    "eslint-plugin-standard": "^4.0.0",
+    "forever": "^1.0.0",
     "mocha": "^5.2.0",
+    "morgan": "^1.9.1",
     "nodemon": "^1.18.7",
-    "morgan": "^1.9.1"
+    "path": "^0.12.7",
+    "prettier": "1.17.0",
+    "webpack": "^4.30.0",
+    "webpack-cli": "^3.3.1",
+    "webpack-node-externals": "^1.7.2"
   },
   "dependencies": {
     "apollo-server": "^2.2.3",
